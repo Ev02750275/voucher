@@ -1,43 +1,400 @@
-function enviarVoucherFormulario9() {
-    const checkin = document.getElementById('checkin').value;
-    const checkout = document.getElementById('checkout').value;
-    const tarifa = document.getElementById('valorDiarioFinal').value || 0;
-    const feeAseo = document.getElementById('feeAseo').value || 0;
-    const nombre = document.getElementById('nombre').value || 'Huésped';
-    const rut = document.getElementById('rut').value || '';
-    const fono = document.getElementById('telefono').value || '';
-    const direccion = document.getElementById('direccion').value || '';
-    const adultos = document.getElementById('adultos').value || 1;
-    const ninos = document.getElementById('ninos').value || 0;
-    const canal = document.getElementById('canal').value || 'Directo';
-    const noches = reservaCalculada.noches || 1;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserva y Políticas - Refugio Entremontañas</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    if (!checkin || !checkout) {
-        return alert('⚠️ Selecciona primero las fechas de estadía.');
+  <style>
+    :root {
+      --brand-orange: #e89c7c;
+      --text-dark: #2c3b42;
+      --border-color: #2c3b42;
+      --light-gray: #f8f9fa;
     }
 
-    // Reemplaza esta URL por la que te entregue Vercel en el Paso 3
-    const urlBaseVercel = "https://refugio-voucher-pdf.vercel.app";
+    * { box-sizing: border-box; }
 
-    // Se construyen los parámetros dinámicos
-    const urlVoucherPDF = `${urlBaseVercel}/?nombre=${encodeURIComponent(nombre)}&rut=${encodeURIComponent(rut)}&telefono=${encodeURIComponent(fono)}&direccion=${encodeURIComponent(direccion)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&adultos=${adultos}&ninos=${ninos}&noches=${noches}&tarifa=${tarifa}&feeAseo=${feeAseo}&canal=${encodeURIComponent(canal)}`;
-
-    // Mensaje para el cliente por WhatsApp
-    const mensaje = `🏔️ *CONFIRMACIÓN DE RESERVA - REFUGIO ENTRE MONTAÑAS* 🏔️\n\n` +
-                    `Hola ${nombre}, ¡tu reserva ha sido confirmada!\n\n` +
-                    `📄 Puedes revisar y descargar tu comprobante oficial (Formulario 9) en el siguiente enlace:\n` +
-                    `${urlVoucherPDF}\n\n` +
-                    `¡Te esperamos en Malalcahuello! 🌲❄️`;
-
-    // Copiar mensaje al portapapeles
-    navigator.clipboard.writeText(mensaje);
-
-    // Abrir WhatsApp con el link del Voucher
-    if (fono) {
-        const numLimpio = fono.replace(/\D/g, '');
-        const numCompleto = numLimpio.startsWith('56') ? numLimpio : `56${numLimpio}`;
-        window.open(`https://wa.me/${numCompleto}?text=${encodeURIComponent(mensaje)}`, '_blank');
-    } else {
-        alert('¡Mensaje con enlace al Formulario 9 copiado al portapapeles!');
+    body {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #d1d8dd;
+      margin: 0;
+      padding: 20px 10px;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
     }
-}
+
+    .document-page {
+      background: #ffffff;
+      width: 100%;
+      max-width: 720px;
+      padding: 28px;
+      border-radius: 4px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+      border: 1px solid #b0bec5;
+    }
+
+    .header-table {
+      display: grid;
+      grid-template-columns: 120px 1fr 170px;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--brand-orange);
+    }
+
+    .logo-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-container img {
+      width: 100%;
+      max-width: 110px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    .brand-title .refugio {
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      display: block;
+    }
+
+    .brand-title .malalcahuello {
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      font-size: 1.1rem;
+      color: var(--brand-orange);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .doc-title-box {
+      text-align: right;
+      font-size: 0.82rem;
+    }
+
+    .doc-title-box h2 {
+      margin: 0 0 6px 0;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 0.5px;
+    }
+
+    .section-banner {
+      background-color: var(--brand-orange);
+      border: 1px solid var(--brand-orange);
+      color: var(--text-dark);
+      font-weight: 400;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      text-align: left;
+      padding: 6px 12px;
+      text-transform: uppercase;
+      margin-top: 14px;
+      margin-bottom: 10px;
+    }
+
+    .orange-highlight-box {
+      background-color: var(--brand-orange);
+      color: var(--text-dark);
+      font-weight: 400;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      text-align: left;
+      margin-top: 12px;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .orange-highlight-box strong { font-weight: 600; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+    .data-box {
+      border: 1px solid var(--border-color);
+      padding: 5px 8px;
+      font-size: 0.82rem;
+      background-color: #fff;
+    }
+
+    .data-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .data-box .value {
+      font-weight: 500;
+      color: #000;
+    }
+
+    .bank-card {
+      border: 1px solid var(--border-color);
+      background-color: #ffffff;
+      padding: 10px 12px;
+      margin-top: 6px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .bank-card p { margin: 3px 0; }
+    .bank-card .highlight { font-weight: 700; color: var(--text-dark); }
+
+    .considerations {
+      font-size: 0.76rem;
+      line-height: 1.42;
+      color: var(--text-dark);
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .considerations ol { padding-left: 18px; margin: 0; }
+    .considerations li { margin-bottom: 5px; }
+
+    .contact-box {
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      text-align: center;
+      font-size: 0.78rem;
+      font-style: italic;
+      color: var(--text-dark);
+      margin-top: 6px;
+    }
+
+    .policy-list {
+      font-size: 0.76rem;
+      line-height: 1.4;
+      color: var(--text-dark);
+      margin-top: 15px;
+      font-weight: 400;
+    }
+
+    .policy-item { margin-bottom: 10px; }
+    .policy-item h3 {
+      margin: 0 0 3px 0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      letter-spacing: 0.5px;
+    }
+    .policy-item p { margin: 0; }
+    .policy-item ul { margin: 3px 0 0 0; padding-left: 18px; }
+
+    .btn-print-container { width: 100%; max-width: 720px; }
+    .btn-print {
+      width: 100%;
+      background-color: var(--brand-orange);
+      color: var(--text-dark);
+      border: 1px solid var(--text-dark);
+      font-family: 'Montserrat', sans-serif;
+      padding: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; gap: 0; }
+      .document-page {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+        padding: 15px;
+        page-break-after: always;
+      }
+      .btn-print-container { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="btn-print-container">
+    <button class="btn-print" onclick="window.print()">📄 Guardar en PDF / Imprimir Formulario 9</button>
+  </div>
+
+  <!-- HOJA 1: FORMULARIO DE RESERVA -->
+  <div class="document-page">
+    <div class="header-table">
+      <div class="logo-container">
+        <img src="https://drive.google.com/thumbnail?id=13lAQBDPNtqM7BmFMuq1R78MOHhGF_S_U&sz=w500" alt="Refugio Logo">
+      </div>
+      <div class="brand-title">
+        <span class="refugio">REFUGIO</span>
+        <span class="refugio" style="font-size:0.95rem; font-weight:400;">ENTRE MONTAÑAS</span>
+        <span class="malalcahuello">MALALCAHUELLO</span>
+      </div>
+      <div class="doc-title-box">
+        <h2>FORMULARIO DE<br>RESERVA</h2>
+        <div><strong>N° Form:</strong> <span id="vNumForm">--</span></div>
+        <div><strong>Fecha Form:</strong> <span id="vFechaForm">--</span></div>
+      </div>
+    </div>
+
+    <div class="section-banner">ANTECEDENTES GENERALES DE LA RESERVA</div>
+
+    <div class="grid-4">
+      <div class="data-box"><label>Check-in (D-M-A)</label><div class="value" id="vCheckin">--</div></div>
+      <div class="data-box"><label>Hora Check-in</label><div class="value">15:00</div></div>
+      <div class="data-box"><label>Check-out</label><div class="value" id="vCheckout">--</div></div>
+      <div class="data-box"><label>Hora Check-out</label><div class="value">12:00</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="data-box"><label>N° Adultos</label><div class="value" id="vAdultos">--</div></div>
+      <div class="data-box"><label>Nº Niños (&lt;12 años) / EDAD</label><div class="value" id="vNinos">--</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="data-box"><label>NOMBRE CONTACTO RESERVA</label><div class="value" id="vNombre">--</div></div>
+      <div class="data-box"><label>RUT</label><div class="value" id="vRut">--</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:6px;">
+      <div class="data-box"><label>DIRECCIÓN</label><div class="value" id="vDireccion">--</div></div>
+      <div class="data-box"><label>FONO</label><div class="value" id="vTelefono">--</div></div>
+    </div>
+
+    <div class="data-box" style="margin-top:6px;">
+      <label>ORIGEN RESERVA</label>
+      <div class="value" id="vOrigen">☐ IG/Wsp &nbsp;&nbsp;&nbsp;&nbsp; ☐ Airbnb &nbsp;&nbsp;&nbsp;&nbsp; ☐ Booking &nbsp;&nbsp;&nbsp;&nbsp; ☐ Otro</div>
+    </div>
+
+    <div class="section-banner">PRECIO Y FORMA DE PAGO</div>
+
+    <div class="grid-4">
+      <div class="data-box"><label>N° de Noches</label><div class="value" id="vNoches">--</div></div>
+      <div class="data-box"><label>Valor Diario</label><div class="value" id="vTarifa">$0</div></div>
+      <div class="data-box"><label>Fee Aseo</label><div class="value" id="vFeeAseo">$0</div></div>
+      <div class="data-box"><label>Valor Total</label><div class="value" id="vTotalBruto">$0</div></div>
+    </div>
+
+    <div class="bank-card">
+      <p><strong>Valor 50% RESERVA:</strong> <span class="highlight" style="font-size:0.95rem;" id="vReserva50">$0</span></p>
+      <p style="margin-top:4px;">Favor transferir el monto de la reserva a la siguiente cuenta bancaria:</p>
+      <p class="highlight" style="margin-top:4px;">Jardín Norte SPA &nbsp;|&nbsp; RUT: 76.714.914-k</p>
+      <p>Banco Itaú &nbsp;|&nbsp; Cta Cte: 0214623372 &nbsp;|&nbsp; Email: mcverac@uc.cl</p>
+      <p style="font-size:0.75rem; font-weight:700; margin-top:4px; color:#a93226;">
+        El saldo se debe transferir ANTES o al MOMENTO del check-in
+      </p>
+    </div>
+
+    <div class="section-banner">CONSIDERACIONES IMPORTANTES DEL ALOJAMIENTO</div>
+
+    <div class="considerations">
+      <ol>
+        <li>La calefacción del refugio depende mayoritariamente de la estufa a leña, por lo tanto, el huésped será responsable de mantenerla permanentemente encendida, para ello, se le suministrará leña ilimitada y gratis para toda su estadía.</li>
+        <li>En la zona, son recurrentes los cortes de energía eléctrica, por lo que el refugio dispone de un generador a bencina, cuya activación deberá realizarla el huésped, siguiendo las instrucciones que se le entregarán.</li>
+        <li>En caso de nevadas o heladas importantes que impidan el ingreso o salida directa al estacionamiento del refugio, el huésped deberá esperar se gestione la habilitación del camino, sin embargo podrá acceder caminando, desde un punto de estacionamiento más distante que le informaremos (50 metros aprox).</li>
+        <li>La Tinaja, es de uso ilimitado y gratis durante toda la estadía, sin embargo, no podemos asegurar que el primer día, ésta se encuentre a la temperatura deseada, ya que el proceso de llenado y calefacción del agua, puede tardar hasta 30 horas en caso de temperaturas extremadamente bajas.</li>
+        <li>Por temas de seguridad, el Refugio cuenta con cámaras de vigilancia en su perímetro externo, las cuales son monitoreadas exclusivamente por los dueños del refugio.</li>
+      </ol>
+    </div>
+
+    <div class="orange-highlight-box">
+      El pago del monto de Reserva, <strong>constituye la aceptación</strong> de todas las condiciones estipuladas en este formulario.
+    </div>
+
+    <div class="contact-box">
+      Contacto Refugio: <strong>M. Carla Vera – 56 9 9879 3922</strong>
+    </div>
+  </div>
+
+  <!-- HOJA 2: POLÍTICAS -->
+  <div class="document-page">
+    <div class="header-table">
+      <div class="logo-container">
+        <img src="https://drive.google.com/thumbnail?id=13lAQBDPNtqM7BmFMuq1R78MOHhGF_S_U&sz=w500" alt="Refugio Logo">
+      </div>
+      <div class="brand-title" style="grid-column: span 2; text-align: right;">
+        <span class="refugio" style="font-size:1.1rem;">POLÍTICAS Y CONDICIONES</span>
+        <span class="refugio" style="font-size:0.85rem; font-weight:400;">DEL ALOJAMIENTO</span>
+      </div>
+    </div>
+
+    <div class="orange-highlight-box" style="font-size: 0.8rem;">
+      Al confirmar y pagar la reserva, el huésped declara aceptar y haber tomado conocimiento de las políticas y condiciones del refugio, y frente a un incumplimiento, nos tomamos la atribución de solicitarles la retirada o negar el acceso.
+    </div>
+
+    <div class="policy-list">
+      <div class="policy-item">
+        <h3>1. HORARIOS DE INGRESO Y SALIDA:</h3>
+        <p>Check-in: desde las 15:00 hrs. &nbsp;|&nbsp; Check-out: hasta las 12:00 hrs.</p>
+        <p style="font-size:0.72rem; opacity:0.9;">Early Check-in o Late check-out, serán factibles y sin costo, sólo previa consulta y de acuerdo a disponibilidad.</p>
+      </div>
+      <div class="policy-item">
+        <h3>2. CAMBIOS O CANCELACIONES:</h3>
+        <p>Se permitirá anular o reagendar la reserva sin costo, cuando es informado 7 días antes de la fecha del check-in, a lo cual se hará la devolución del 100% del monto de la reserva.</p>
+        <p>Se permitirá reagendar o anular la reserva con devolución total, dentro de los 7 días, sólo cuando sea confirmada la imposibilidad de acceder a la zona, por alguna autoridad nacional, regional o policial.</p>
+      </div>
+      <div class="policy-item">
+        <h3>3. NO ARRIBO (NO SHOW):</h3>
+        <p>Si el huésped no se presenta en la fecha estipulada, se dará por anulada la reserva, perdiendo todo derecho a reclamo o devolución del monto de la reserva.</p>
+      </div>
+      <div class="policy-item">
+        <h3>4. RETIRO ANTICIPADO:</h3>
+        <p>Si por cualquier motivo el huésped no pudiera permanecer alojado hasta la fecha de salida reservada, no se efectuará reembolso del saldo no utilizado.</p>
+      </div>
+      <div class="policy-item">
+        <h3>5. CANTIDAD DE HUÉSPEDES:</h3>
+        <p>Se negará el acceso al refugio, si la cantidad de huéspedes es mayor a la informada al momento de la reserva, sin derecho a la devolución del dinero de la reserva.</p>
+        <p>Se permiten visitas a la propiedad, en cantidad moderada, sin derecho a pernoctar y con previo aviso a los contactos del Refugio.</p>
+      </div>
+      <div class="policy-item">
+        <h3>6. ACCESO A LA PROPIEDAD:</h3>
+        <p>El huésped ingresará a la propiedad en forma autónoma, con las instrucciones que se le enviarán posterior a la reserva.</p>
+        <p>Se le asignarán códigos numéricos, para el ingreso tanto al condominio, como al Refugio, los que quedarán inhabilitados una vez se cumpla el plazo de su estadía.</p>
+      </div>
+      <div class="policy-item">
+        <h3>7. DAÑOS:</h3>
+        <p>Cualquier daño generado durante la estadía, debe ser informado previo al check-out, para evaluar la necesidad de pago o indemnización correspondiente por parte del huésped.</p>
+        <p>No se debe agregar nada al agua de la tinaja, ya que esto ocasionará el mal funcionamiento del sistema de bombeo y calefacción.</p>
+      </div>
+      <div class="policy-item">
+        <h3>8. PROHIBIDO EL FUEGO:</h3>
+        <p>Estamos ubicados en una zona de alto riesgo de incendio.</p>
+        <p>No se permite fumar dentro del refugio, y en el exterior se deben depositar los residuos de cigarrillo dentro de la parrilla a carbón, no tirarlos al suelo.</p>
+        <p>No se permite hacer fogatas o similares, el único lugar donde se puede encender fuego, tomando todas las precauciones posibles, es en la parrilla a carbón facilitada para uso de los huéspedes.</p>
+      </div>
+      <div class="policy-item">
+        <h3>9. RUIDOS:</h3>
+        <p>Se permite música o ruidos en niveles moderados, que no interfieran con el descanso de las casas cercanas, si tenemos reclamos, tendremos que solicitarles reduzcan el volumen.</p>
+      </div>
+      <div class="policy-item">
+        <h3>10. CUIDADO DEL ENTORNO Y MEDIO AMBIENTE:</h3>
+        <p>Estamos inmersos en un entorno de hermosa naturaleza, a la cual respetamos profundamente, y necesitamos que nuestros huéspedes nos ayuden a mantenerlo lo más inalterado posible, respetando la flora y fauna existente, depositando sus residuos en los lugares dispuestos para ello, utilizando el agua y la energía eléctrica en forma criteriosa, y cuidando la infraestructura del refugio y del condominio.</p>
+      </div>
+      <div class="policy-item">
+        <h3>11. MASCOTAS:</h3>
+        <p>Aceptamos mascotas sólo previa consulta, reservándonos el derecho a rechazar la solicitud
