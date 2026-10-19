@@ -10,7 +10,6 @@
       --brand-orange: #e89c7c;
       --text-dark: #2c3b42;
       --border-color: #2c3b42;
-      --light-gray: #f8f9fa;
     }
 
     * { box-sizing: border-box; }
@@ -19,7 +18,7 @@
       font-family: 'Montserrat', sans-serif;
       background-color: #d1d8dd;
       margin: 0;
-      padding: 10px;
+      padding: 15px 10px;
       color: var(--text-dark);
       display: flex;
       flex-direction: column;
@@ -49,51 +48,44 @@
       background: #ffffff;
       width: 100%;
       max-width: 720px;
-      padding: 20px;
-      border-radius: 6px;
+      padding: 25px;
+      border-radius: 4px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
-    /* Header */
-    .header-table {
+    /* Tabla Estructura General */
+    table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      table-layout: fixed;
     }
 
-    .header-table td {
-      vertical-align: middle;
+    table.data-table td {
+      border: 1.5px solid var(--border-color);
+      padding: 6px 8px;
+      vertical-align: top;
+      background: #ffffff;
     }
 
-    .logo-img {
-      max-width: 130px;
-      height: auto;
-    }
-
-    .title-main {
-      text-align: center;
-      font-size: 18px;
+    .label {
+      font-size: 9px;
       font-weight: 800;
-      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--text-dark);
-      line-height: 1.2;
-    }
-
-    .title-main span {
-      color: var(--brand-orange);
-      font-size: 14px;
       display: block;
-      margin-top: 2px;
+      margin-bottom: 3px;
     }
 
-    .title-doc {
-      text-align: right;
-      font-size: 13px;
-      font-weight: 800;
+    .value {
+      font-size: 12px;
+      font-weight: 600;
+      color: #111827;
+      word-wrap: break-word;
     }
 
-    /* Banners de Sección */
+    /* Banners */
     .section-banner {
       background-color: var(--brand-orange);
       color: white;
@@ -107,52 +99,41 @@
       text-transform: uppercase;
     }
 
-    /* Grillas */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    /* Header */
+    .header-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
     }
 
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+    .header-table td {
+      vertical-align: middle;
+      border: none !important;
     }
 
-    @media (max-width: 600px) {
-      .grid-4 {
-        grid-template-columns: 1fr 1fr;
-      }
-      .document-page {
-        padding: 12px;
-      }
+    .logo-img {
+      max-width: 120px;
+      height: auto;
     }
 
-    .field-box {
-      border: 1.5px solid var(--border-color);
-      padding: 6px 8px;
-      border-radius: 3px;
-      min-height: 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: #fff;
-    }
-
-    .field-label {
-      font-size: 9px;
+    .title-main {
+      text-align: center;
+      font-size: 18px;
       font-weight: 800;
-      text-transform: uppercase;
       color: var(--text-dark);
-      margin-bottom: 3px;
+      line-height: 1.2;
     }
 
-    .field-value {
+    .title-main span {
+      color: var(--brand-orange);
+      font-size: 13px;
+      display: block;
+    }
+
+    .title-doc {
+      text-align: right;
       font-size: 12px;
-      font-weight: 600;
-      color: #111827;
-      word-break: break-word;
+      font-weight: 800;
     }
 
     /* Caja Banco */
@@ -160,23 +141,19 @@
       border: 1.5px solid var(--border-color);
       padding: 12px;
       border-radius: 3px;
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 11px;
       line-height: 1.5;
-    }
-
-    .bank-box strong {
-      color: var(--text-dark);
     }
 
     .alert-text {
       color: #b91c1c;
       font-weight: 700;
-      margin-top: 4px;
+      margin-top: 5px;
       display: block;
     }
 
-    /* Estilos de Políticas (Página 2) */
+    /* Políticas Hoja 2 */
     .policy-item {
       margin-bottom: 12px;
     }
@@ -184,7 +161,7 @@
     .policy-item h3 {
       font-size: 11px;
       font-weight: 800;
-      margin: 0 0 4px 0;
+      margin: 0 0 3px 0;
       color: var(--text-dark);
       text-transform: uppercase;
     }
@@ -196,25 +173,11 @@
       color: #374151;
     }
 
-    /* Salto de página para impresión */
     @media print {
-      body {
-        background: none;
-        padding: 0;
-      }
-      .btn-container {
-        display: none;
-      }
-      .document-page {
-        box-shadow: none;
-        border-radius: 0;
-        padding: 0;
-        margin-bottom: 0;
-        page-break-after: always;
-      }
-      .document-page:last-child {
-        page-break-after: avoid;
-      }
+      body { background: none; padding: 0; }
+      .btn-container { display: none; }
+      .document-page { box-shadow: none; padding: 0; margin-bottom: 0; page-break-after: always; }
+      .document-page:last-child { page-break-after: avoid; }
     }
   </style>
 </head>
@@ -230,12 +193,12 @@
     <table class="header-table">
       <tr>
         <td width="25%">
-          <img src="https://raw.githubusercontent.com/Ev02750275/voucher/main/logo.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/130x80?text=REFUGIO';" class="logo-img" alt="Refugio Logo">
+          <img src="https://raw.githubusercontent.com/Ev02750275/voucher/main/logo.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/120x70?text=REFUGIO';" class="logo-img" alt="Refugio Logo">
         </td>
         <td width="50%" class="title-main">
           REFUGIO
           <span>ENTRE MONTAÑAS</span>
-          <span style="color:var(--brand-orange); font-size:12px;">MALALCAHUELLO</span>
+          <span style="color:var(--brand-orange); font-size:11px;">MALALCAHUELLO</span>
         </td>
         <td width="25%" class="title-doc">
           FORMULARIO DE RESERVA<br>
@@ -246,6 +209,206 @@
 
     <div class="section-banner">Antecedentes Generales de la Reserva</div>
 
-    <div class="grid-4" style="margin-bottom: 8px;">
-      <div class="field-box">
-        <div class="field-label">
+    <table class="data-table">
+      <tr>
+        <td width="25%">
+          <span class="label">CHECK-IN (D-M-A)</span>
+          <span class="value" id="valCheckin">--</span>
+        </td>
+        <td width="25%">
+          <span class="label">HORA CHECK-IN</span>
+          <span class="value">15:00 hrs</span>
+        </td>
+        <td width="25%">
+          <span class="label">CHECK-OUT</span>
+          <span class="value" id="valCheckout">--</span>
+        </td>
+        <td width="25%">
+          <span class="label">HORA CHECK-OUT</span>
+          <span class="value">12:00 hrs</span>
+        </td>
+      </tr>
+    </table>
+
+    <table class="data-table">
+      <tr>
+        <td width="50%">
+          <span class="label">N° ADULTOS</span>
+          <span class="value" id="valAdultos">1</span>
+        </td>
+        <td width="50%">
+          <span class="label">N° NIÑOS (&lt;12 AÑOS)</span>
+          <span class="value" id="valNinos">0</span>
+        </td>
+      </tr>
+    </table>
+
+    <table class="data-table">
+      <tr>
+        <td width="50%">
+          <span class="label">NOMBRE CONTACTO RESERVA</span>
+          <span class="value" id="valNombre">--</span>
+        </td>
+        <td width="50%">
+          <span class="label">RUT / PASAPORTE</span>
+          <span class="value" id="valRut">--</span>
+        </td>
+      </tr>
+    </table>
+
+    <table class="data-table">
+      <tr>
+        <td width="50%">
+          <span class="label">DIRECCIÓN</span>
+          <span class="value" id="valDireccion">--</span>
+        </td>
+        <td width="50%">
+          <span class="label">FONO / WHATSAPP</span>
+          <span class="value" id="valTelefono">--</span>
+        </td>
+      </tr>
+    </table>
+
+    <table class="data-table">
+      <tr>
+        <td width="100%">
+          <span class="label">ORIGEN RESERVA</span>
+          <span class="value" id="valCanal">Directo</span>
+        </td>
+      </tr>
+    </table>
+
+    <div class="section-banner">Precio y Forma de Pago</div>
+
+    <table class="data-table">
+      <tr>
+        <td width="25%">
+          <span class="label">N° DE NOCHES</span>
+          <span class="value" id="valNoches">1</span>
+        </td>
+        <td width="25%">
+          <span class="label">VALOR DIARIO</span>
+          <span class="value" id="valTarifa">$0</span>
+        </td>
+        <td width="25%">
+          <span class="label">FEE ASEO</span>
+          <span class="value" id="valFeeAseo">$0</span>
+        </td>
+        <td width="25%">
+          <span class="label">VALOR TOTAL</span>
+          <span class="value" id="valTotal">$0</span>
+        </td>
+      </tr>
+    </table>
+
+    <div class="bank-box">
+      <div style="font-size:13px; font-weight:800; margin-bottom:4px;">
+        Valor 50% RESERVA: <span id="valAbono50" style="color:var(--brand-orange);">$0</span>
+      </div>
+      Favor transferir el monto de la reserva a la siguiente cuenta bancaria:<br>
+      <strong>Jardín Norte SPA | RUT: 76.714.914-k</strong><br>
+      Banco Itaú | Cta Cte: 0214623372 | Email: mcverac@uc.cl
+      <span class="alert-text">El saldo se debe transferir ANTES o al MOMENTO del check-in</span>
+    </div>
+
+  </div>
+
+  <!-- HOJA 2: CONSIDERACIONES E INSTRUCCIONES -->
+  <div class="document-page">
+    <div class="section-banner" style="margin-top:0;">Consideraciones Importantes del Alojamiento</div>
+
+    <div class="policy-item">
+      <h3>1. POLÍTICA DE CANCELACIÓN Y ANULACIÓN DE RESERVAS</h3>
+      <p>Toda anulación efectuada con más de 15 días de anticipación tendrá un reembolso del 100% del abono. Entre 14 y 7 días previos, se reembolsará el 50%. Cancelaciones con menos de 7 días no tendrán reembolso.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>2. HORARIOS DE CHECK-IN Y CHECK-OUT</h3>
+      <p>El horario de entrada es a contar de las 15:00 hrs y la salida hasta las 12:00 hrs. Salidas posteriores sin autorización previa tendrán un recargo equivalente a una noche adicional.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>3. NÚMERO DE HUÉSPEDES Y VISITAS</h3>
+      <p>El uso de la propiedad está estrictamente limitado al número de personas registradas en esta reserva. No se permiten visitas adicionales ni fiestas o eventos no autorizados.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>4. NORMAS DE USO DE LA TINAJA / HOT TUB</h3>
+      <p>Uso bajo la responsabilidad de los adultos. No consumir bebidas ni alimentos dentro de la tinaja. Apagar el sistema de calentamiento al terminar de usarla.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>5. CALEFACCIÓN Y CUIDADO DE LA PROPIEDAD</h3>
+      <p>Mantener estufas y calefacción supervisadas. Asegurar puertas y ventanas al salir del refugio.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>6. RESPONSABILIDAD DE OBJETOS PERSONALES</h3>
+      <p>El establecimiento no se hace responsable por pérdidas o extravío de objetos de valor dejados en las instalaciones.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>7. DAÑOS Y PERJUICIOS</h3>
+      <p>Cualquier daño generado durante la estadía debe ser informado previo al check-out para evaluar la necesidad de pago o indemnización correspondiente.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>8. PROHIBIDO EL FUEGO</h3>
+      <p>Estamos ubicados en una zona de alto riesgo de incendio. No se permite fumar dentro del refugio. Únicamente se autoriza fuego en la parrilla a carbón.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>9. RUIDOS MOLESTOS</h3>
+      <p>Se permite música en niveles moderados que no interfieran con el descanso de las casas cercanas.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>10. CUIDADO DEL ENTORNO Y MEDIO AMBIENTE</h3>
+      <p>Estamos inmersos en un entorno de hermosa naturaleza, a la cual respetamos profundamente y solicitamos mantener limpia.</p>
+    </div>
+
+    <div class="policy-item">
+      <h3>11. MASCOTAS</h3>
+      <p>Aceptamos mascotas sólo previa consulta y confirmación explícita al momento de reservar.</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+
+      const getP = (key, def = '--') => {
+        const val = params.get(key);
+        return (val && val !== 'null' && val !== 'undefined' && val !== '') ? decodeURIComponent(val) : def;
+      };
+
+      // Inyección de datos
+      if (document.getElementById('valNombre')) document.getElementById('valNombre').innerText = getP('nombre');
+      if (document.getElementById('valRut')) document.getElementById('valRut').innerText = getP('rut');
+      if (document.getElementById('valTelefono')) document.getElementById('valTelefono').innerText = getP('telefono');
+      if (document.getElementById('valDireccion')) document.getElementById('valDireccion').innerText = getP('direccion');
+      if (document.getElementById('valCheckin')) document.getElementById('valCheckin').innerText = getP('checkin');
+      if (document.getElementById('valCheckout')) document.getElementById('valCheckout').innerText = getP('checkout');
+      if (document.getElementById('valAdultos')) document.getElementById('valAdultos').innerText = getP('adultos', '1');
+      if (document.getElementById('valNinos')) document.getElementById('valNinos').innerText = getP('ninos', '0');
+      if (document.getElementById('valNoches')) document.getElementById('valNoches').innerText = getP('noches', '1');
+      if (document.getElementById('valCanal')) document.getElementById('valCanal').innerText = getP('canal', 'Directo');
+
+      // Cálculos
+      const tarifa = parseFloat(getP('tarifa', '0')) || 0;
+      const feeAseo = parseFloat(getP('feeAseo', '0')) || 0;
+      const noches = parseInt(getP('noches', '1')) || 1;
+
+      const total = (tarifa * noches) + feeAseo;
+      const abono50 = total * 0.5;
+
+      const fmt = (num) => '$' + Math.round(num).toLocaleString('es-CL');
+
+      if (document.getElementById('valTarifa')) document.getElementById('valTarifa').innerText = fmt(tarifa);
+      if (document.getElementById('valFeeAseo')) document.getElementById('valFeeAseo').innerText = fmt(feeAseo);
+      if (document.getElementById('valTotal')) document.getElementById('valTotal').innerText = fmt(total);
+      if (document.getElementById('valAbono50')) document.getElementById('valAbono50').innerText = fmt(abono50);
+    });
+  </script>
+</body>
+</html>
