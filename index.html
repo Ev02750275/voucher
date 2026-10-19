@@ -401,44 +401,85 @@
 
           <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. Obtener parámetros de la URL
     const params = new URLSearchParams(window.location.search);
+    if (!params.has('nombre') && !params.has('checkin')) return;
 
-    // Función auxiliar para asignar texto
-    const setCampo = (elementId, paramKey, defaultVal = '--') => {
-      const el = document.getElementById(elementId);
-      if (el) {
-        const val = params.get(paramKey);
-        el.innerText = (val && val !== 'null' && val !== 'undefined' && val !== '') ? decodeURIComponent(val) : defaultVal;
-      }
+    // Helper para obtener parámetro
+    const getP = (key, def = '') => {
+      const val = params.get(key);
+      return (val && val !== 'null' && val !== 'undefined') ? decodeURIComponent(val) : def;
     };
 
-    // 2. Rellenar datos del huésped y estadía
-    setCampo('valNombre', 'nombre', '--');
-    setCampo('valRut', 'rut', '--');
-    setCampo('valTelefono', 'telefono', '--');
-    setCampo('valDireccion', 'direccion', '--');
-    setCampo('valCheckin', 'checkin', '--');
-    setCampo('valCheckout', 'checkout', '--');
-    setCampo('valAdultos', 'adultos', '1');
-    setCampo('valNinos', 'ninos', '0');
-    setCampo('valNoches', 'noches', '1');
-    setCampo('valCanal', 'canal', 'Directo');
+    const datos = {
+      nombre: getP('nombre', 'Huésped'),
+      rut: getP('rut', '--'),
+      telefono: getP('telefono', '--'),
+      direccion: getP('direccion', '--'),
+      checkin: getP('checkin', '--'),
+      checkout: getP('checkout', '--'),
+      adultos: getP('adultos', '1'),
+      ninos: getP('ninos', '0'),
+      noches: getP('noches', '1'),
+      canal: getP('canal', 'Directo'),
+      tarifa: parseFloat(getP('tarifa', '0')) || 0,
+      feeAseo: parseFloat(getP('feeAseo', '0')) || 0
+    };
 
-    // 3. Rellenar y calcular valores monetarios
-    const tarifa = parseFloat(params.get('tarifa') || 0);
-    const feeAseo = parseFloat(params.get('feeAseo') || 0);
-    const noches = parseInt(params.get('noches') || 1);
-
-    const total = (tarifa * noches) + feeAseo;
+    const total = (datos.tarifa * parseInt(datos.noches || 1)) + datos.feeAseo;
     const abono50 = total * 0.5;
-
     const fmt = (num) => '$' + Math.round(num).toLocaleString('es-CL');
 
-    if (document.getElementById('valTarifa')) document.getElementById('valTarifa').innerText = fmt(tarifa);
-    if (document.getElementById('valFeeAseo')) document.getElementById('valFeeAseo').innerText = fmt(feeAseo);
-    if (document.getElementById('valTotal')) document.getElementById('valTotal').innerText = fmt(total);
-    if (document.getElementById('valAbono50')) document.getElementById('valAbono50').innerText = fmt(abono50);
+    // 1. Asignación por ID (para los IDs más comunes)
+    const mapIDs = {
+      valNombre: datos.nombre, nombre: datos.nombre, cliente: datos.nombre,
+      valRut: datos.rut, rut: datos.rut,
+      valTelefono: datos.telefono, fono: datos.telefono, telefono: datos.telefono,
+      valDireccion: datos.direccion, direccion: datos.direccion,
+      valCheckin: datos.checkin, checkin: datos.checkin,
+      valCheckout: datos.checkout, checkout: datos.checkout,
+      valAdultos: datos.adultos, adultos: datos.adultos,
+      valNinos: datos.ninos, ninos: datos.ninos,
+      valNoches: datos.noches, noches: datos.noches,
+      valTarifa: fmt(datos.tarifa), tarifa: fmt(datos.tarifa),
+      valFeeAseo: fmt(datos.feeAseo), feeAseo: fmt(datos.feeAseo),
+      valTotal: fmt(total), total: fmt(total),
+      valAbono50: fmt(abono50), abono: fmt(abono50)
+    };
+
+    Object.keys(mapIDs).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = mapIDs[id];
+    });
+
+    // 2. Escaneo inteligente si los elementos no tenían IDs definidos
+    // Rellena secuencialmente las casillas que tienen '--' o '$0'
+    const elementosTexto = Array.from(document.querySelectorAll('td, span, div, p, h4'))
+      .filter(el => el.children.length === 0 && (el.innerText.trim() === '--' || el.innerText.trim() === '$0'));
+
+    if (elementosTexto.length >= 8) {
+      // Orden estándar de casillas en la plantilla
+      const valoresSecuencia = [
+        datos.checkin,
+        datos.checkout,
+        datos.adultos,
+        datos.ninos,
+        datos.nombre,
+        datos.rut,
+        datos.direccion,
+        datos.telefono,
+        datos.noches,
+        fmt(datos.tarifa),
+        fmt(datos.feeAseo),
+        fmt(total),
+        fmt(abono50)
+      ];
+
+      elementosTexto.forEach((el, index) => {
+        if (valoresSecuencia[index] !== undefined) {
+          el.innerText = valoresSecuencia[index];
+        }
+      });
+    }
   });
 </script>
 </body>
