@@ -52,6 +52,7 @@
       padding: 20px;
       border-radius: 6px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+      margin-bottom: 20px;
     }
 
     /* Header */
@@ -92,7 +93,7 @@
       font-weight: 800;
     }
 
-    /* Section Banner */
+    /* Banners de Sección */
     .section-banner {
       background-color: var(--brand-orange);
       color: white;
@@ -106,7 +107,7 @@
       text-transform: uppercase;
     }
 
-    /* Grid Layout for Fields */
+    /* Grillas */
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -154,7 +155,7 @@
       word-break: break-word;
     }
 
-    /* Bank Details Box */
+    /* Caja Banco */
     .bank-box {
       border: 1.5px solid var(--border-color);
       padding: 12px;
@@ -174,6 +175,47 @@
       margin-top: 4px;
       display: block;
     }
+
+    /* Estilos de Políticas (Página 2) */
+    .policy-item {
+      margin-bottom: 12px;
+    }
+
+    .policy-item h3 {
+      font-size: 11px;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+      color: var(--text-dark);
+      text-transform: uppercase;
+    }
+
+    .policy-item p {
+      font-size: 10px;
+      line-height: 1.4;
+      margin: 0;
+      color: #374151;
+    }
+
+    /* Salto de página para impresión */
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .btn-container {
+        display: none;
+      }
+      .document-page {
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        margin-bottom: 0;
+        page-break-after: always;
+      }
+      .document-page:last-child {
+        page-break-after: avoid;
+      }
+    }
   </style>
 </head>
 <body>
@@ -182,9 +224,9 @@
     <button class="btn-print" onclick="window.print()">📄 Guardar en PDF / Imprimir Formulario 9</button>
   </div>
 
+  <!-- HOJA 1: ANTECEDENTES Y PAGO -->
   <div class="document-page">
     
-    <!-- HEADER -->
     <table class="header-table">
       <tr>
         <td width="25%">
@@ -202,136 +244,8 @@
       </tr>
     </table>
 
-    <!-- ANTECEDENTES GENERALES -->
     <div class="section-banner">Antecedentes Generales de la Reserva</div>
 
     <div class="grid-4" style="margin-bottom: 8px;">
       <div class="field-box">
-        <div class="field-label">CHECK-IN (D-M-A)</div>
-        <div class="field-value" id="valCheckin">--</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">HORA CHECK-IN</div>
-        <div class="field-value">15:00 hrs</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">CHECK-OUT</div>
-        <div class="field-value" id="valCheckout">--</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">HORA CHECK-OUT</div>
-        <div class="field-value">12:00 hrs</div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-bottom: 8px;">
-      <div class="field-box">
-        <div class="field-label">N° ADULTOS</div>
-        <div class="field-value" id="valAdultos">1</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">N° NIÑOS (&lt;12 AÑOS)</div>
-        <div class="field-value" id="valNinos">0</div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-bottom: 8px;">
-      <div class="field-box">
-        <div class="field-label">NOMBRE CONTACTO RESERVA</div>
-        <div class="field-value" id="valNombre">--</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">RUT / PASAPORTE</div>
-        <div class="field-value" id="valRut">--</div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-bottom: 8px;">
-      <div class="field-box">
-        <div class="field-label">DIRECCIÓN</div>
-        <div class="field-value" id="valDireccion">--</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">FONO / WHATSAPP</div>
-        <div class="field-value" id="valTelefono">--</div>
-      </div>
-    </div>
-
-    <div class="field-box" style="margin-bottom: 8px;">
-      <div class="field-label">ORIGEN RESERVA</div>
-      <div class="field-value" id="valCanal">Directo</div>
-    </div>
-
-    <!-- PRECIO Y FORMA DE PAGO -->
-    <div class="section-banner">Precio y Forma de Pago</div>
-
-    <div class="grid-4" style="margin-bottom: 8px;">
-      <div class="field-box">
-        <div class="field-label">N° DE NOCHES</div>
-        <div class="field-value" id="valNoches">1</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">VALOR DIARIO</div>
-        <div class="field-value" id="valTarifa">$0</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">FEE ASEO</div>
-        <div class="field-value" id="valFeeAseo">$0</div>
-      </div>
-      <div class="field-box">
-        <div class="field-label">VALOR TOTAL</div>
-        <div class="field-value" id="valTotal">$0</div>
-      </div>
-    </div>
-
-    <div class="bank-box">
-      <div style="font-size:13px; font-weight:800; margin-bottom:4px;">
-        Valor 50% RESERVA: <span id="valAbono50" style="color:var(--brand-orange);">$0</span>
-      </div>
-      Favor transferir el monto de la reserva a la siguiente cuenta bancaria:<br>
-      <strong>Jardín Norte SPA | RUT: 76.714.914-k</strong><br>
-      Banco Itaú | Cta Cte: 0214623372 | Email: mcverac@uc.cl
-      <span class="alert-text">El saldo se debe transferir ANTES o al MOMENTO del check-in</span>
-    </div>
-
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-
-      const getP = (key, def = '--') => {
-        const val = params.get(key);
-        return (val && val !== 'null' && val !== 'undefined' && val !== '') ? decodeURIComponent(val) : def;
-      };
-
-      // Mapeo exacto por ID
-      document.getElementById('valNombre').innerText = getP('nombre');
-      document.getElementById('valRut').innerText = getP('rut');
-      document.getElementById('valTelefono').innerText = getP('telefono');
-      document.getElementById('valDireccion').innerText = getP('direccion');
-      document.getElementById('valCheckin').innerText = getP('checkin');
-      document.getElementById('valCheckout').innerText = getP('checkout');
-      document.getElementById('valAdultos').innerText = getP('adultos', '1');
-      document.getElementById('valNinos').innerText = getP('ninos', '0');
-      document.getElementById('valNoches').innerText = getP('noches', '1');
-      document.getElementById('valCanal').innerText = getP('canal', 'Directo');
-
-      // Cálculos monetarios
-      const tarifa = parseFloat(getP('tarifa', '0')) || 0;
-      const feeAseo = parseFloat(getP('feeAseo', '0')) || 0;
-      const noches = parseInt(getP('noches', '1')) || 1;
-
-      const total = (tarifa * noches) + feeAseo;
-      const abono50 = total * 0.5;
-
-      const fmt = (num) => '$' + Math.round(num).toLocaleString('es-CL');
-
-      document.getElementById('valTarifa').innerText = fmt(tarifa);
-      document.getElementById('valFeeAseo').innerText = fmt(feeAseo);
-      document.getElementById('valTotal').innerText = fmt(total);
-      document.getElementById('valAbono50').innerText = fmt(abono50);
-    });
-  </script>
-</body>
-</html>
+        <div class="field-label">
