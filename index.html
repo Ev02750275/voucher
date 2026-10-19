@@ -398,3 +398,48 @@
       <div class="policy-item">
         <h3>11. MASCOTAS:</h3>
         <p>Aceptamos mascotas sólo previa consulta, reservándonos el derecho a rechazar la solicitud
+
+          <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Obtener parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+
+    // Función auxiliar para asignar texto
+    const setCampo = (elementId, paramKey, defaultVal = '--') => {
+      const el = document.getElementById(elementId);
+      if (el) {
+        const val = params.get(paramKey);
+        el.innerText = (val && val !== 'null' && val !== 'undefined' && val !== '') ? decodeURIComponent(val) : defaultVal;
+      }
+    };
+
+    // 2. Rellenar datos del huésped y estadía
+    setCampo('valNombre', 'nombre', '--');
+    setCampo('valRut', 'rut', '--');
+    setCampo('valTelefono', 'telefono', '--');
+    setCampo('valDireccion', 'direccion', '--');
+    setCampo('valCheckin', 'checkin', '--');
+    setCampo('valCheckout', 'checkout', '--');
+    setCampo('valAdultos', 'adultos', '1');
+    setCampo('valNinos', 'ninos', '0');
+    setCampo('valNoches', 'noches', '1');
+    setCampo('valCanal', 'canal', 'Directo');
+
+    // 3. Rellenar y calcular valores monetarios
+    const tarifa = parseFloat(params.get('tarifa') || 0);
+    const feeAseo = parseFloat(params.get('feeAseo') || 0);
+    const noches = parseInt(params.get('noches') || 1);
+
+    const total = (tarifa * noches) + feeAseo;
+    const abono50 = total * 0.5;
+
+    const fmt = (num) => '$' + Math.round(num).toLocaleString('es-CL');
+
+    if (document.getElementById('valTarifa')) document.getElementById('valTarifa').innerText = fmt(tarifa);
+    if (document.getElementById('valFeeAseo')) document.getElementById('valFeeAseo').innerText = fmt(feeAseo);
+    if (document.getElementById('valTotal')) document.getElementById('valTotal').innerText = fmt(total);
+    if (document.getElementById('valAbono50')) document.getElementById('valAbono50').innerText = fmt(abono50);
+  });
+</script>
+</body>
+</html>
